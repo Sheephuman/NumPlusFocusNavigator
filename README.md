@@ -4,6 +4,9 @@ WPF,Winform
 TTF Implement
 
 # ParaGraph
+This project ensures that when focus is on a TextBox, accidental input is prevented.<br>
+
+
 + WPF
 Number + Key Navigation Control Focus Samples on WPF/WinForms <br>
 TSF (Text Services Framework) Implementation Sample
