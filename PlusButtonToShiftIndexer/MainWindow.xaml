@@ -1,0 +1,96 @@
+﻿<Window x:Class="PlusButtonToShiftIndexer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PlusButtonToShiftIndexer"
+        mc:Ignorable="d"
+        
+        
+        
+        Title="MainWindow" Height="450" Width="800">
+    <Grid
+        >
+        <TabControl>
+            <TabItem Header="Test1">
+                <Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- 左列 -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="初期値－タブ有無" Margin="0,0,0,5"/>
+                            <RadioButton Content="○あり" Margin="0,0,0,5"/>
+                            <RadioButton Content="×なし" Margin="0,0,0,5"/>
+                            <TextBlock Text="ラベル幅" Margin="0,0,0,5"/>
+                            <TextBox
+                x:Name="inputer"
+               PreviewKeyDown="TextBox_PreviewKeyDown"                   
+                  
+Text="文字" Width="100"/>
+                        </StackPanel>
+
+                        <!-- 中央列 -->
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="制御コード設定" Margin="0,0,0,5"/>
+                            <CheckBox Content="○初期値" Margin="0,0,0,5"/>
+                            <CheckBox Content="入力項目幅" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="活性" Margin="0,0,5,0"/>
+                                <ComboBox Width="100">
+                                    <ComboBoxItem>あり</ComboBoxItem>
+                                    <ComboBoxItem>なし</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="必須性" Margin="0,0,5,0"/>
+                                <ComboBox Width="100">
+                                    <ComboBoxItem>あり</ComboBoxItem>
+                                    <ComboBoxItem>なし</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- 右列 -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="入力データ" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="文字" Margin="0,0,5,0"/>
+                                <TextBox Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="数値" Margin="0,0,5,0"/>
+                                <TextBox Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="整数" Margin="0,0,5,0"/>
+                                <TextBox Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="数値 (DECIMAL)" Margin="0,0,5,0"/>
+                                <TextBox Width="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock Text="日付データ" Margin="0,0,5,0"/>
+                                <TextBox Width="100"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- フッター部分 -->
+                    <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Enter" Width="100" Margin="0,0,10,0"/>
+                        <Button Content="F1: 取消" Width="100"/>
+                        <Button Content="F11: 確定" Width="100"/>
+                        <Button Content="Shift+F9: 終了" Width="100"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+          
+        </TabControl>
+    </Grid>
+</Window>
