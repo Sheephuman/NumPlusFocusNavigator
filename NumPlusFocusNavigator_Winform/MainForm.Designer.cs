@@ -28,82 +28,82 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            textBox6 = new TextBox();
+            myTextBox1 = new MyTextBox();
+            myTextBox2 = new MyTextBox();
+            myTextBox3 = new MyTextBox();
+            myTextBox4 = new MyTextBox();
+            myTextBox5 = new MyTextBox();
+            myTextBox6 = new MyTextBox();
             SuspendLayout();
             // 
-            // textBox1
+            // myTextBox1
             // 
-            textBox1.Location = new Point(58, 51);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(200, 45);
-            textBox1.TabIndex = 0;
+            myTextBox1.Location = new Point(41, 63);
+            myTextBox1.Name = "myTextBox1";
+            myTextBox1.Size = new Size(200, 45);
+            myTextBox1.TabIndex = 6;
             // 
-            // textBox2
+            // myTextBox2
             // 
-            textBox2.Location = new Point(58, 154);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(200, 45);
-            textBox2.TabIndex = 1;
+            myTextBox2.Location = new Point(41, 129);
+            myTextBox2.Name = "myTextBox2";
+            myTextBox2.Size = new Size(200, 45);
+            myTextBox2.TabIndex = 7;
             // 
-            // textBox3
+            // myTextBox3
             // 
-            textBox3.Location = new Point(58, 244);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(200, 45);
-            textBox3.TabIndex = 2;
+            myTextBox3.Location = new Point(41, 240);
+            myTextBox3.Name = "myTextBox3";
+            myTextBox3.Size = new Size(200, 45);
+            myTextBox3.TabIndex = 8;
             // 
-            // textBox4
+            // myTextBox4
             // 
-            textBox4.Location = new Point(380, 51);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(200, 45);
-            textBox4.TabIndex = 3;
+            myTextBox4.Location = new Point(309, 63);
+            myTextBox4.Name = "myTextBox4";
+            myTextBox4.Size = new Size(200, 45);
+            myTextBox4.TabIndex = 9;
             // 
-            // textBox5
+            // myTextBox5
             // 
-            textBox5.Location = new Point(380, 164);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(200, 45);
-            textBox5.TabIndex = 4;
+            myTextBox5.Location = new Point(309, 148);
+            myTextBox5.Name = "myTextBox5";
+            myTextBox5.Size = new Size(200, 45);
+            myTextBox5.TabIndex = 10;
             // 
-            // textBox6
+            // myTextBox6
             // 
-            textBox6.Location = new Point(380, 258);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(200, 45);
-            textBox6.TabIndex = 5;
+            myTextBox6.Location = new Point(309, 240);
+            myTextBox6.Name = "myTextBox6";
+            myTextBox6.Size = new Size(200, 45);
+            myTextBox6.TabIndex = 11;
             // 
             // Mainform
             // 
             AutoScaleDimensions = new SizeF(15F, 38F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(textBox6);
-            Controls.Add(textBox5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(myTextBox6);
+            Controls.Add(myTextBox5);
+            Controls.Add(myTextBox4);
+            Controls.Add(myTextBox3);
+            Controls.Add(myTextBox2);
+            Controls.Add(myTextBox1);
             Name = "Mainform";
             Text = "form";
             Load += Mainform_Load;
-            KeyDown += Mainform_KeyDown;
+            
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
-        private TextBox textBox6;
+        private MyTextBox myTextBox1;
+        private MyTextBox myTextBox2;
+        private MyTextBox myTextBox3;
+        private MyTextBox myTextBox4;
+        private MyTextBox myTextBox5;
+        private MyTextBox myTextBox6;
     }
 }

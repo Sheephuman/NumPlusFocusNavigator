@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using System.Text;
 
 namespace NumPlusFocusNavigator_Winform
 {
@@ -16,32 +15,21 @@ namespace NumPlusFocusNavigator_Winform
 
         [DllImport("imm32.dll")]
         private static extern uint ImmGetVirtualKey(IntPtr hWnd);
+        //IMEが有効になる前の元々のキーコードを取得できる関数
+
 
         [DllImport("imm32.dll")]
         private static extern bool ImmNotifyIME(IntPtr hIMC, int dwAction, int dwIndex, int dwValue);
 
 
-        [DllImport("imm32.dll", CharSet = CharSet.Unicode)]
-        private static extern int ImmGetCompositionStringW(
-     IntPtr hIMC, int dwIndex, byte[] lpBuf, int dwBufLen);
 
 
         private const int NI_COMPOSITIONSTR = 0x0015;
 
 
-        /// <summary>
-        /// Windows の IME がアプリに送る通知メッセージのひとつで、
-        //        主に「未確定文字列」や「変換中の情報」が更新されたときに飛んできます。
-        /// </summary>
-        private const int WM_IME_COMPOSITION = 0x010F;
 
 
         private const int CPS_CANCEL = 0x0004;
-
-        private const int NI_CLOSECANDIDATE = 0x0011;  // 候補ウィンドウを閉じる
-
-        private const int GCS_COMPSTR = 0x0008;   // 未確定文字列
-
 
         public Mainform()
         {
@@ -49,100 +37,63 @@ namespace NumPlusFocusNavigator_Winform
 
             this.WalkInChildren(ctrl =>
             {
-                if (ctrl is TextBox tbox)
+                if (ctrl is MyTextBox tbox)
                 {
-                    tbox.KeyDown += SendTabKey;
-                    tbox.KeyDown += textBox_Keydowm_DetectIME;
+                    tbox.KeyPress += SendTabKey_KeyPress;
 
-                    tbox.TextChanged += TextBox_CleaText;
+                    tbox.KeyDown += tbox_KeyDown;
+
+                    tbox.KeyPress += textBox_KeyPress;
                 }
 
             });
 
-            this.KeyPreview = true;
-            //KeydownイベントをMainFormで拾う
         }
 
-        private void TextBox_CleaText(object? sender, EventArgs e)
+        private void tbox_KeyDown(object? sender, KeyEventArgs e)
         {
-            var tbox2 = sender as TextBox;
-
-            if (tbox2 is null && hWnd == IntPtr.Zero)
-                return;
-
-            if (IsImeOn(hWnd))
-                tbox2!.Clear();
+            if (IsImeOn(Handle)) //IMEがOnのとき
+                e.Handled = true; // 入力イベントをキャンセル   
 
 
-        }
-        IntPtr hWnd;
-        private void textBox_Keydowm_DetectIME(object? sender, KeyEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (textBox == null) return;
-
-            hWnd = textBox.Handle;   // WinFormsでは Handle が HWND
+            IntPtr hWnd = this.Handle;
             IntPtr hIMC = ImmGetContext(hWnd);
 
             if (hIMC != IntPtr.Zero)
             {
                 uint virtualKey = ImmGetVirtualKey(hWnd);
-                if (virtualKey != 0) // IME が処理したキーがある場合
+                if (virtualKey != 0) // IMEが処理したキーがある場合
                 {
+                    ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_CANCEL, 0); // IMEバッファーをキャンセル
 
 
-
-                    if (IsImeOn(hWnd)) // IMEがONなら
-                    {
-
-
-                        ImmNotifyIME(hIMC, NI_CLOSECANDIDATE, 0, 0);
-                        // 候補ウィンドウを閉じる
-
-
-
-
-                        ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_CANCEL, 0); // IMEバッファをキャンセル
-
-
-                        e.Handled = true;  // WinFormsで KeyDown をキャンセルする方法
-                    }
+                    //すぐにウィンドウハンドルを開放する
+                    ImmReleaseContext(hWnd, hIMC);
                 }
-                ImmReleaseContext(hWnd, hIMC); // 必ず解放
             }
         }
 
-        private void SendTabKey(object? sender, KeyEventArgs e)
+        private void SendTabKey_KeyPress(object? sender, KeyPressEventArgs e)
         {
-            if (e.KeyCode == Keys.Tab)
+            if (e.KeyChar == '+')
+            {
                 SendKeys.Send("{TAB}");
-        }
-
-        private void Mainform_KeyDown(object sender, KeyEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            if (textBox == null) return;
-
-            IntPtr hWnd = textBox.Handle;   // WinFormsでは Handle が HWND
-            IntPtr hIMC = ImmGetContext(hWnd);
-
-            if (hIMC != IntPtr.Zero)
-            {
-                uint virtualKey = ImmGetVirtualKey(hWnd);
-                if (virtualKey != 0) // IME が処理したキーがある場合
-                {
-                    ImmNotifyIME(hIMC, NI_COMPOSITIONSTR, CPS_CANCEL, 0); // IMEバッファをキャンセル
-
-                    if (IsImeOn(hWnd)) // IMEがONなら
-                    {
-                        e.Handled = true;  // WinFormsで KeyDown をキャンセルする方法
-                    }
-                }
-                ImmReleaseContext(hWnd, hIMC); // 必ず解放
+                e.Handled = true; // 入力を無効化したい場合
             }
         }
 
-        private static bool IsImeOn(IntPtr hWnd)
+
+
+
+
+        private void Mainform_Load(object sender, EventArgs e)
+        {
+            myTextBox1.Focus();
+
+
+        }
+
+        private bool IsImeOn(IntPtr hWnd)
         {
             IntPtr hIMC = ImmGetContext(hWnd);
             if (hIMC != IntPtr.Zero)
@@ -154,33 +105,19 @@ namespace NumPlusFocusNavigator_Winform
             return false;
         }
 
-        private void Mainform_Load(object sender, EventArgs e)
-        {
-            textBox1.Focus();
-        }
 
-
-        protected override void WndProc(ref Message m)
+        private void textBox_KeyPress(object? sender, KeyPressEventArgs? e)
         {
-            if (m.Msg == WM_IME_COMPOSITION)
+            if (e.KeyChar == '+')
             {
-                IntPtr hIMC = ImmGetContext(this.Handle);
-                if (hIMC != IntPtr.Zero)
-                {
-                    // 未確定文字列の長さを取得
-                    int size = ImmGetCompositionStringW(hIMC, GCS_COMPSTR, null, 0);
-                    if (size > 0)
-                    {
-                        byte[] buffer = new byte[size];
-                        ImmGetCompositionStringW(hIMC, GCS_COMPSTR, buffer, size);
 
-                        string comp = Encoding.Unicode.GetString(buffer);
-                        Console.WriteLine("未確定文字列: " + comp);
-                    }
-                    ImmReleaseContext(this.Handle, hIMC);
-                }
+                e.Handled = true; // 入力を無効化したい場合
             }
-            base.WndProc(ref m);
+
+            else if (IsImeOn(Handle))
+                e.Handled = true;
         }
+
+
     }
 }
